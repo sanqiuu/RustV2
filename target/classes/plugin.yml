@@ -1,0 +1,3 @@
+name: RustV2
+version: '1.0'
+main: com.sanqiu.rustv2.RustV2
