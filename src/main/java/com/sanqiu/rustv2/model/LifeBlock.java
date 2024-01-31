@@ -27,6 +27,9 @@ public class LifeBlock {
         String uuid = player.getUniqueId().toString();
         for(RPlayer rPlayer:PlayerManager.INSTANCE.player_list){
             if(rPlayer.uuid.equals(uuid)){
+                if(block.getState().getData() instanceof Door){
+                    rPlayer.addBlock(block.getRelative(BlockFace.UP));
+                }
                 rPlayer.addBlock(block);
                 break;
             }
@@ -35,7 +38,11 @@ public class LifeBlock {
     private static void removeBlock(Block block){
         for(RPlayer rPlayer:PlayerManager.INSTANCE.player_list){
             if(rPlayer.isPlayerPlace(block)){
+                if(block.getState().getData() instanceof Door){
+                    rPlayer.removeBlock(block.getRelative(BlockFace.UP));
+                }
               rPlayer.removeBlock(block);
+                break;
             }
         }
     }
@@ -53,6 +60,7 @@ public class LifeBlock {
         for(RPlayer rPlayer:PlayerManager.INSTANCE.player_list){
             if(rPlayer.isPlayerPlace(block)){
                 player = Bukkit.getPlayer(UUID.fromString(rPlayer.uuid));
+                break;
             }
         }
         return player;
@@ -61,8 +69,14 @@ public class LifeBlock {
     public static void mark(BlockPlaceEvent event){
         Block block = event.getBlock();
         Player player = event.getPlayer();
-        player.sendMessage("放置类型："+block.getType().toString()+"["+block.getData()+"]");
-        addBlock(block,player);
+        //player.sendMessage("放置类型："+block.getType().toString()+"["+block.getData()+"]");
+        if(!Radio.isRadioZone(block.getLocation())){
+            addBlock(block,player);
+        }else {
+            player.sendMessage("该区域禁止放置方块");
+            event.setCancelled(true);
+        }
+
     }
     public static void interact(PlayerInteractEvent event){
         if(event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
@@ -78,24 +92,63 @@ public class LifeBlock {
             }
         }
     }
+private static boolean isLifeBlock(Material material){
+        boolean result =false;
+        switch (material){
+            case WOOD:
+            case SMOOTH_BRICK:
+            case WOOD_DOOR:
+            case IRON_DOOR:
+            case CHEST:
+            case STAINED_GLASS:
+            case GLASS:
+            case TRAP_DOOR:
+            case SMOOTH_STAIRS:
+            case COBBLESTONE_STAIRS:
+            case WOOD_STAIRS:
+                result = true;
+                break;
+        }
+        return result;
+}
+private static boolean harmLifeBlock(Block block){
 
+    Material material = block.getType();
+    boolean result = false;
+    switch (material){
+        case SMOOTH_BRICK:
+            int id = block.getData();
+            if( id == 2)     result = true;
+            else if(id == 3) block.setData((byte)0);
+            else if(id ==0) block.setData((byte)2);
+            break;
+        case STAINED_GLASS:
+            block.setType(Material.GLASS);
+            break;
+        case SMOOTH_STAIRS:
+            block.setType(Material.COBBLESTONE);
+            break;
+        case IRON_DOOR:
+            break;
+        case WOOD:
+        case WOOD_DOOR:
+        case CHEST:
+        case GLASS:
+        case TRAP_DOOR:
+        case WOOD_STAIRS:
+        case COBBLESTONE_STAIRS:
+        default:
+            result = true;
+            break;
+    }
+    return result;
+}
     public static void interact(BlockExplodeEvent event){
         event.setCancelled(true);
         for(Block block: event.blockList()){
-            Material material = block.getType();
-            boolean isDestory = false;
-            switch (material){
-                case WOOD:
-                    isDestory = true;
-                    break;
-                case SMOOTH_BRICK:
-                    int id = block.getData();
-                    if( id == 2) isDestory = true;
-                    else if(id == 3) block.setData((byte)0);
-                    else if(id ==0) block.setData((byte)2);
-                    break;
-            }
-            if(isDestory){
+            Player player = getWhoPlace(block);
+            boolean isDestory = harmLifeBlock(block);
+            if(player != null && isDestory){
                 block.setType(Material.AIR);
                 removeBlock(block);
             }
@@ -107,7 +160,7 @@ public class LifeBlock {
         Player player = event.getPlayer();
         Player who = getWhoPlace(block);
         if(who!=null){
-            if(!who.getUniqueId().equals(player.getUniqueId())){
+            if(isLifeBlock(block.getType()) && !who.getUniqueId().equals(player.getUniqueId())){
                 event.setCancelled(true);
                 player.sendMessage("你不能破坏["+ player.getName()+"]放置的方块");
             }else {

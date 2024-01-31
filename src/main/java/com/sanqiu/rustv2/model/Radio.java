@@ -86,9 +86,8 @@ public class Radio {
         score3.setScore(0);
         player.setScoreboard(scoreboard);
     }
-
-    public static void Radiate(Player player){
-        Chunk chunk = player.getLocation().getChunk();
+    public static boolean isRadioZone(Location location){
+        Chunk chunk = location.getChunk();
         double x = chunk.getX();
         double z = chunk.getZ();
         boolean isRadiate  = false;
@@ -101,9 +100,12 @@ public class Radio {
                 break;
             }
         }
+        return isRadiate;
+    }
+    public static void Radiate(Player player){
 
         int value = getRadioValue(player);
-        if(isRadiate){
+        if(isRadioZone(player.getLocation())){
             value+=9;
 
         }else{

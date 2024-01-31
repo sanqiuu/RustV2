@@ -9,6 +9,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.material.MaterialData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +37,198 @@ class CraftingTableHolder implements InventoryHolder {
     }
 
 }
+enum MATERIAL_TYPE {
+    WOOD(0),
+    STONE(0),
+    REDSTONE(0),
+    COAL(0),
+    IRON(0),
+    LEATHER(0),
+    FEATHER(0),
+
+    STRING(0),
+    WOOL(0),
+    FLINT(0),
+    CLOTH(1),
+    TORCH(0);
+    private final int value;
+
+    // 构造器默认也只能是private, 从而保证构造函数只能在内部使用
+    MATERIAL_TYPE(int value) {
+        this.value = value;
+    }
+
+    public int getValue() {
+        return value;
+    }
+}
+ class    MATERIAL {
+    private  static  MATERIAL_TYPE fromName(String string){
+        MATERIAL_TYPE type = null;
+        switch (string){
+            case "木头":
+                type = MATERIAL_TYPE.WOOD;
+                break;
+            case "圆石":
+                type = MATERIAL_TYPE.STONE;
+                break;
+            case "红石":
+                type = MATERIAL_TYPE.REDSTONE;
+                break;
+            case "皮革":
+                type = MATERIAL_TYPE.LEATHER;
+                break;
+            case "煤":
+                type = MATERIAL_TYPE.COAL;
+                break;
+            case "铁":
+                type = MATERIAL_TYPE.IRON;
+                break;
+            case "羽毛":
+                type = MATERIAL_TYPE.FEATHER;
+                break;
+            case "线":
+                type = MATERIAL_TYPE.STRING;
+                break;
+            case "羊毛":
+                type = MATERIAL_TYPE.WOOL;
+                break;
+            case "燧石":
+                type = MATERIAL_TYPE.FLINT;
+                break;
+            case "布料":
+                type = MATERIAL_TYPE.CLOTH;
+                break;
+            case "火把":
+                type = MATERIAL_TYPE.TORCH;
+                break;
+        }
+        assert type!=null;
+        return type;
+    }
+
+     private  static String getName(MATERIAL_TYPE type){
+        String string = null;
+       switch (type){
+           case WOOD:
+               string = "木头";
+               break;
+           case STONE:
+               string = "圆石";
+               break;
+           case REDSTONE:
+               string = "红石";
+               break;
+           case LEATHER:
+               string = "皮革";
+               break;
+           case COAL:
+               string = "煤";
+               break;
+           case IRON:
+               string = "铁";
+               break;
+           case FEATHER:
+               string = "羽毛";
+               break;
+           case STRING:
+               string = "线";
+               break;
+           case WOOL:
+               string = "羊毛";
+               break;
+           case FLINT:
+               string = "燧石";
+               break;
+           case CLOTH:
+               string = "布料";
+               break;
+           case TORCH:
+               string = "火把";
+               break;
+       }
+       assert string!=null;
+       return  string;
+    }
+    private   static Material getMaterial(MATERIAL_TYPE type){
+
+        Material material = null;
+        switch (type){
+            case WOOD:
+                material = Material.LOG;
+                break;
+            case STONE:
+                material = Material.COBBLESTONE;
+                break;
+            case REDSTONE:
+                material = Material.REDSTONE;
+                break;
+            case LEATHER:
+                material =Material.LEATHER;
+                break;
+            case COAL:
+                material = Material.COAL;
+                break;
+            case IRON:
+                material = Material.IRON_INGOT;
+                break;
+            case FEATHER:
+                material = Material.FEATHER;
+                break;
+            case STRING:
+                material = Material.STRING;
+                break;
+            case WOOL:
+                material = Material.WOOL;
+                break;
+            case FLINT:
+                material = Material.FLINT;
+                break;
+            case CLOTH:
+                material = Material.PAPER;
+                break;
+            case TORCH:
+                material = Material.TORCH;
+                break;
+        }
+        assert material!=null;
+        return  material;
+    }
+     public static void addLore(ItemStack itemStack, MATERIAL_TYPE type, int number){
+         ItemMeta itemMeta = itemStack.getItemMeta();
+         String lore = MATERIAL.getName(type) +"X"+number;
+         List<String> lore_list;
+         if(itemMeta.hasLore()){
+             lore_list = itemMeta.getLore();
+             if(!lore_list.contains(lore)){
+                 lore_list.add(lore);
+             }
+         }else{
+             lore_list = new ArrayList<>();
+             lore_list.add(lore);
+         }
+         itemMeta.setLore(lore_list);
+         itemStack.setItemMeta(itemMeta);
+     }
+     public static List<ItemStack> fromLore(ItemStack itemStack){
+         List<String> lore_list = itemStack.getItemMeta().getLore();
+         List<ItemStack> list = new ArrayList<>();
+         if(lore_list == null) return list;
+         for(String lore:lore_list){
+             String object_name = lore.split("X")[0];
+             int num = Integer.parseInt(lore.split("X")[1]);
+             MATERIAL_TYPE type = MATERIAL.fromName(object_name);
+             ItemStack item = new ItemStack(MATERIAL.getMaterial(type),num);
+             if(type.getValue() == 1){
+                 ItemMeta meta = item.getItemMeta();
+                 meta.setDisplayName(MATERIAL.getName(type));
+                 item.setItemMeta(meta);
+             }
+             list.add(item);
+         }
+         return  list;
+     }
+}
 public class CraftingTable {
     private Inventory inventory;
     Player player;
@@ -46,22 +239,7 @@ public class CraftingTable {
     {
         return inventory;
     }
-    private void addLore(ItemStack itemStack, String name, int number){
-        ItemMeta itemMeta = itemStack.getItemMeta();
-        String lore = name+"X"+number;
-        List<String> lore_list;
-        if(itemMeta.hasLore()){
-            lore_list = itemMeta.getLore();
-            if(!lore_list.contains(lore)){
-                lore_list.add(lore);
-            }
-        }else{
-            lore_list = new ArrayList<>();
-            lore_list.add(lore);
-        }
-        itemMeta.setLore(lore_list);
-        itemStack.setItemMeta(itemMeta);
-    }
+
     private ItemStack toItem(Material type, String name, int num)
     {
         ItemStack itemStack = new ItemStack(type,num);
@@ -74,30 +252,24 @@ public class CraftingTable {
     }
     public  boolean buyGoods(Player player,Inventory inv,int index)
     {
+
         ItemStack item = inv.getItem(index);
         boolean canBuy = true;
         if(item!=null ){
-            ItemMeta itemMeta = item.getItemMeta();
-            if(!itemMeta.hasLore()){
-                player.getInventory().addItem(item.clone());
-                return true;
-            }
-            List<String> lore_list = itemMeta.getLore();
-            for(String lore:lore_list){
-                String object_name = lore.split("X")[0];
-                int num = Integer.parseInt(lore.split("X")[1]);
-                if(!ItemUtil.isPlayerItemEnough(player,object_name,num)){
+            List<ItemStack> list = MATERIAL.fromLore(item);
+
+            for(ItemStack is:list){
+                int num = is.getAmount();
+                if(!ItemUtil.isPlayerItemEnough(player,is,num)){
                     canBuy = false;
                     break;
                 }
             }
 
             if(canBuy){
-                for(String lore:lore_list){
-                    String object_name = lore.split("X")[0];
-                    int num = Integer.parseInt(lore.split("X")[1]);
-                    ItemUtil.subPlayerItemAmount(player,object_name,num);
-
+                for(ItemStack is:list){
+                    int num = is.getAmount();
+                    ItemUtil.subPlayerItemAmount(player,is,num);
                 }
                 ItemStack itemStack = item.clone();
                 ItemMeta meta = itemStack.getItemMeta();
@@ -138,26 +310,27 @@ public class CraftingTable {
     }
     private void InitTNTInventory(Inventory inv,Player player){
 
-        ItemStack item1 = toItem(Material.TNT,"C4",1);
+        ItemStack item1 = toItem(Material.TNT,"TNT",1);
         if(!Blueprint.hasBlueprint(player, item1)){
-            item1  = toItem(Material.STAINED_GLASS_PANE,"C4",1);
+            item1  = toItem(Material.STAINED_GLASS_PANE,null,1);
         }
-        addLore(item1,"火药",1);
-        addLore(item1,"煤",3);
+        MATERIAL.addLore(item1,MATERIAL_TYPE.REDSTONE,64);
+        MATERIAL.addLore(item1,MATERIAL_TYPE.STRING,4);
+        MATERIAL.addLore(item1,MATERIAL_TYPE.COAL,10);
         inv.setItem(0,item1);
     }
     private void InitTestInventory(Inventory inv,Player player){
-        ItemStack item1 = toItem(Material.PAPER,"蓝图-C4",1);
-        ItemStack item2 = toItem(Material.IRON_ORE,"铁矿",64);
-        ItemStack item3 = toItem(Material.GOLD_ORE,"金矿",64);
-        ItemStack item4 = toItem(Material.DIAMOND_ORE,"钻石矿",64);
-        ItemStack item5 = toItem(Material.COAL_ORE,"煤矿",64);
-        ItemStack item6 = toItem(Material.REDSTONE_ORE,"红石矿",64);
-        ItemStack item7 = toItem(Material.LOG,"木头",64);
-        ItemStack item8 = toItem(Material.STONE,"石头",64);
-        ItemStack item9 = toItem(Material.COBBLESTONE,"圆石",64);
-        ItemStack item10 = toItem(Material.BREAD,"面包",64);
-        ItemStack item11 = toItem(Material.GOLDEN_APPLE,"金苹果",1);
+        ItemStack item1 = toItem(Material.PAPER,"蓝图-TNT",1);
+        ItemStack item2 = toItem(Material.IRON_ORE,null,64);
+        ItemStack item3 = toItem(Material.GOLD_ORE,null,64);
+        ItemStack item4 = toItem(Material.DIAMOND_ORE,null,64);
+        ItemStack item5 = toItem(Material.COAL_ORE,null,64);
+        ItemStack item6 = toItem(Material.REDSTONE_ORE,null,64);
+        ItemStack item7 = toItem(Material.LOG,null,64);
+        ItemStack item8 = toItem(Material.STONE,null,64);
+        ItemStack item9 = toItem(Material.COBBLESTONE,null,64);
+        ItemStack item10 = toItem(Material.BREAD,null,64);
+        ItemStack item11 = toItem(Material.GOLDEN_APPLE,null,64);
         inv.setItem(0,item1);
         inv.setItem(1,item2);
         inv.setItem(2,item3);
@@ -171,112 +344,162 @@ public class CraftingTable {
         inv.setItem(10,item11);
     }
     private void InitRustBlockInventory(Inventory inv,Player player){
-        ItemStack item1 = toItem(Material.WOOD,"木板",1);
-        addLore(item1,"木头",3);
-        ItemStack item2 = toItem(Material.SMOOTH_BRICK,"石砖",1);
-        addLore(item2,"石头",3);
-        ItemStack item3 = toItem(Material.TRAPPED_CHEST,"领地柜",1);
-        addLore(item3,"木头",20);
-        ItemStack item4 = toItem(Material.FURNACE,"熔炉",1);
-        addLore(item4,"圆石",5);
-        ItemStack item5 = toItem(Material.WOOD_DOOR,"木门",1);
-        addLore(item5,"木头",3);
-        ItemStack item6 = toItem(Material.BED,"床",1);
-        addLore(item6,"羊毛",1);
-        ItemStack item7 = toItem(Material.CHEST,"箱子",1);
-        addLore(item7,"木头",1);
-        ItemStack item8 = toItem(Material.ANVIL,"铁砧",1);
-        addLore(item8,"石头",5);
-        addLore(item8,"铁锭",3);
-        ItemStack item9 = toItem(Material.LADDER,"梯子",1);
-        addLore(item9,"木头",1);
-        ItemStack item10 = toItem(Material.IRON_BLOCK,"铁砖",1);
-        addLore(item10,"铁锭",9);
-        inv.setItem(0,item1);
-        inv.setItem(1,item2);
-        inv.setItem(2,item3);
-        inv.setItem(3,item4);
-        inv.setItem(4,item5);
-        inv.setItem(5,item6);
-        inv.setItem(6,item7);
-        inv.setItem(7,item8);
-        inv.setItem(8,item9);
-        inv.setItem(9,item10);
+        ItemStack item ;
+         item = toItem(Material.WOOD,null,1);
+        MATERIAL.addLore(item,MATERIAL_TYPE.WOOD,7);
+        inv.setItem(0,item);
+        item = toItem(Material.SMOOTH_BRICK,null,1);
+        MATERIAL.addLore(item,MATERIAL_TYPE.STONE,12);
+        inv.setItem(1,item);
+        item = toItem(Material.FURNACE,null,1);
+        MATERIAL.addLore(item,MATERIAL_TYPE.STONE,25);
+        inv.setItem(2,item);
+        item = toItem(Material.WOOD_DOOR,null,1);
+        MATERIAL.addLore(item,MATERIAL_TYPE.WOOD,240);
+        inv.setItem(3,item);
+        item = toItem(Material.BED,null,1);
+        MATERIAL.addLore(item,MATERIAL_TYPE.CLOTH,25);
+        MATERIAL.addLore(item,MATERIAL_TYPE.LEATHER,10);
+        MATERIAL.addLore(item,MATERIAL_TYPE.WOOD,60);
+        item = toItem(Material.CHEST,null,1);
+        MATERIAL.addLore(item,MATERIAL_TYPE.WOOD,70);
+        inv.setItem(4,item);
+        item = toItem(Material.ANVIL,null,1);
+        MATERIAL.addLore(item,MATERIAL_TYPE.IRON,80);
+        inv.setItem(5,item);
+        item = toItem(Material.LADDER,null,1);
+        MATERIAL. addLore(item,MATERIAL_TYPE.WOOD,5);
+        inv.setItem(6,item);
+        item = toItem(Material.TORCH,null,1);
+        MATERIAL.addLore(item,MATERIAL_TYPE.COAL,5);
+        MATERIAL.addLore(item,MATERIAL_TYPE.WOOD,3);
+        inv.setItem(7,item);
+        item = toItem(Material.SIGN,null,1);
+        MATERIAL.addLore(item,MATERIAL_TYPE.WOOD,30);
+        inv.setItem(8,item);
+        item = toItem(Material.TRAP_DOOR,null,1);
+        MATERIAL.addLore(item,MATERIAL_TYPE.WOOD,50);
+        MATERIAL.addLore(item,MATERIAL_TYPE.IRON,25);
+        inv.setItem(9,item);
+        item = toItem(Material.WOOD_STAIRS,null,1);
+        MATERIAL.addLore(item,MATERIAL_TYPE.WOOD,7);
+        inv.setItem(10,item);
+        item = toItem(Material.WOOL,null,1);
+        MATERIAL.addLore(item,MATERIAL_TYPE.CLOTH,5);
+        inv.setItem(11,item);
+        item = toItem(Material.IRON_DOOR,null,1);
+        MATERIAL.addLore(item,MATERIAL_TYPE.IRON,100);
+        inv.setItem(12,item);
+        item = toItem(Material.RAILS,null,1);
+        MATERIAL.addLore(item,MATERIAL_TYPE.IRON,10);
+        MATERIAL.addLore(item,MATERIAL_TYPE.WOOD,5);
+        inv.setItem(13,item);
+        item = toItem(Material.IRON_FENCE,null,1);
+        MATERIAL.addLore(item,MATERIAL_TYPE.IRON,20);
+        inv.setItem(14,item);
+        item = toItem(Material.SMOOTH_STAIRS,null,1);
+        MATERIAL.addLore(item,MATERIAL_TYPE.STONE,10);
+        inv.setItem(15,item);
+
+        item = toItem(Material.SMOOTH_BRICK,null,1);
+        item.setDurability((short) 2);
+
+        MATERIAL.addLore(item,MATERIAL_TYPE.STONE,5);
+        inv.setItem(16,item);
+        item = toItem(Material.SMOOTH_BRICK,null,1);
+        item.setDurability((short) 3);
+        MATERIAL.addLore(item,MATERIAL_TYPE.STONE,15);
+        inv.setItem(17,item);
+        item = toItem(Material.REDSTONE_LAMP_OFF,null,1);
+        MATERIAL.addLore(item,MATERIAL_TYPE.TORCH,1);
+        MATERIAL.addLore(item,MATERIAL_TYPE.REDSTONE,5);
+        MATERIAL.addLore(item,MATERIAL_TYPE.IRON,2);
+        inv.setItem(18,item);
+        item = toItem(Material.STAINED_GLASS,null,1);
+        MATERIAL.addLore(item,MATERIAL_TYPE.STONE,20);
+        inv.setItem(19,item);
     }
     private void InitToolInventory(Inventory inv,Player player){
-        ItemStack item1 = toItem(Material.TORCH,"火把",1);
-        addLore(item1,"木头",1);
-        ItemStack item2 = toItem(Material.WOOD_AXE,"木斧",1);
-        addLore(item2,"木头",3);
-        ItemStack item3 = toItem(Material.WOOD_PICKAXE,"木镐",1);
-        addLore(item3,"木头",3);
-        ItemStack item4 = toItem(Material.FISHING_ROD,"钓鱼竿",1);
-        addLore(item4,"木头",5);
-        addLore(item4,"丝线",1);
-        ItemStack item5 = toItem(Material.WOOD_HOE,"木锄头",1);
-        addLore(item5,"木头",3);
-        ItemStack item6 = toItem(Material.STONE_AXE,"石斧",1);
-        addLore(item6,"石头",3);
-        ItemStack item7 = toItem(Material.STONE_PICKAXE,"石镐",1);
-        addLore(item7,"石头",3);
-        ItemStack item8 = toItem(Material.STONE_HOE,"石锄头",1);
-        addLore(item8,"石头",3);
-        inv.setItem(0,item1);
-        inv.setItem(1,item2);
-        inv.setItem(2,item3);
-        inv.setItem(3,item4);
-        inv.setItem(4,item5);
-        inv.setItem(5,item6);
-        inv.setItem(6,item7);
-        inv.setItem(7,item8);
 
-
+        ItemStack item = toItem(Material.STONE_AXE,null,1);
+        MATERIAL.addLore(item,MATERIAL_TYPE.WOOD,15);
+        MATERIAL.addLore(item,MATERIAL_TYPE.STONE,5);
+        inv.setItem(0,item);
+        item = toItem(Material.STONE_PICKAXE,null,1);
+        MATERIAL.addLore(item,MATERIAL_TYPE.WOOD,15);
+        MATERIAL.addLore(item,MATERIAL_TYPE.STONE,5);
+        inv.setItem(1,item);
+        item = toItem(Material.FISHING_ROD,null,1);
+        MATERIAL.addLore(item,MATERIAL_TYPE.WOOD,10);
+        MATERIAL.addLore(item,MATERIAL_TYPE.STRING,44);
+        inv.setItem(2,item);
+        item = toItem(Material.STONE_HOE,null, 1);
+        MATERIAL.addLore(item,MATERIAL_TYPE.WOOD,15);
+        MATERIAL.addLore(item,MATERIAL_TYPE.STONE,5);
+        inv.setItem(3,item);
+        item = toItem(Material.IRON_AXE,null,1);
+        MATERIAL.addLore(item,MATERIAL_TYPE.WOOD,25);
+        MATERIAL.addLore(item,MATERIAL_TYPE.IRON,30);
+        inv.setItem(4,item);
+        item = toItem(Material.IRON_PICKAXE,null,1);
+        MATERIAL.addLore(item,MATERIAL_TYPE.WOOD,25);
+        MATERIAL.addLore(item,MATERIAL_TYPE.IRON,50);
+        inv.setItem(5,item);
+        item = toItem(Material.IRON_HOE,null,1);
+        MATERIAL.addLore(item,MATERIAL_TYPE.WOOD,25);
+        MATERIAL.addLore(item,MATERIAL_TYPE.IRON,30);
+        inv.setItem(6,item);
 
     }
     private void InitAmmoInventory(Inventory inv,Player player){
-        ItemStack item1 = toItem(Material.ARROW,"箭矢",64);
-        addLore(item1,"木头",1);
-        addLore(item1,"羽毛",1);
+        ItemStack item1 = toItem(Material.ARROW,null,1);
+        MATERIAL.addLore(item1,MATERIAL_TYPE.WOOD,2);
+        MATERIAL.addLore(item1,MATERIAL_TYPE.STONE,2);
+        MATERIAL.addLore(item1,MATERIAL_TYPE.FEATHER,2);
         inv.setItem(0,item1);
     }
     private void InitWeaponInventory(Inventory inv,Player player){
-        ItemStack item1 = toItem(Material.BOW,"弓箭",1);
-        addLore(item1,"木头",5);
-        ItemStack item2 = toItem(Material.WOOD_SWORD,"木剑",1);
-        addLore(item2,"木头",5);
-        ItemStack item3 = toItem(Material.STONE_SWORD,"石剑",1);
-        addLore(item3,"石头",5);
+        ItemStack item1 = toItem(Material.BOW,null,1);
+        MATERIAL.addLore(item1,MATERIAL_TYPE.WOOD,20);
+        MATERIAL.addLore(item1,MATERIAL_TYPE.STRING,10);
+        ItemStack item2 = toItem(Material.STONE_SWORD,null,1);
+        MATERIAL.addLore(item2,MATERIAL_TYPE.WOOD,15);
+        MATERIAL.addLore(item2,MATERIAL_TYPE.STONE,25);
+        ItemStack item3 = toItem(Material.IRON_SWORD,null,1);
+        MATERIAL.addLore(item3,MATERIAL_TYPE.WOOD,25);
+        MATERIAL.addLore(item3,MATERIAL_TYPE.IRON,60);
+        ItemStack item4 = toItem(Material.SHIELD,null,1);
+        MATERIAL.addLore(item4,MATERIAL_TYPE.WOOD,50);
         inv.setItem(0,item1);
         inv.setItem(1,item2);
         inv.setItem(2,item3);
+        inv.setItem(3,item4);
     }
     private void InitArmorInventory(Inventory inv,Player player){
 
-        ItemStack item1 = toItem(Material.LEATHER_BOOTS,"皮制靴",1);
-        addLore(item1,"皮革",1);
-        ItemStack item2 = toItem(Material.LEATHER_CHESTPLATE,"皮制胸甲",1);
-        addLore(item2,"皮革",1);
-        ItemStack item3 = toItem(Material.LEATHER_HELMET,"皮制头盔",1);
-        addLore(item3,"皮革",1);
-        ItemStack item4 = toItem(Material.LEATHER_LEGGINGS,"皮制护腿",1);
-        addLore(item4,"皮革",1);
+        ItemStack item1 = toItem(Material.LEATHER_BOOTS,null,1);
+        MATERIAL.addLore(item1,MATERIAL_TYPE.LEATHER,8);
+        ItemStack item2 = toItem(Material.LEATHER_CHESTPLATE,null,1);
+        MATERIAL.addLore(item2,MATERIAL_TYPE.LEATHER,15);
+        ItemStack item3 = toItem(Material.LEATHER_HELMET,null,1);
+        MATERIAL.addLore(item3,MATERIAL_TYPE.LEATHER,5);
+        ItemStack item4 = toItem(Material.LEATHER_LEGGINGS,null,1);
+        MATERIAL.addLore(item4,MATERIAL_TYPE.LEATHER,10);
         inv.setItem(0,item1);
         inv.setItem(1,item2);
         inv.setItem(2,item3);
         inv.setItem(3,item4);
     }
     private void InitMaterialInventory(Inventory inv,Player player){
-        ItemStack item1 = toItem(Material.BREAD,"面包",1);
-        addLore(item1,"小麦",1);
-        ItemStack item2 = toItem(Material.GOLDEN_APPLE,"金苹果",1);
-        addLore(item2,"苹果",1);
-        addLore(item2,"金锭",1);
-        inv.setItem(0,item1);
-        inv.setItem(1,item2);
+        ItemStack item = toItem(Material.STRING,null,1);
+        MATERIAL.addLore(item,MATERIAL_TYPE.CLOTH,1);
+        inv.setItem(0,item);
+
     }
     private void InitVehicleInventory(Inventory inv,Player player){
-        ItemStack item1 = toItem(Material.BOAT,"船",1);
-        addLore(item1,"木头",20);
+        ItemStack item1 = toItem(Material.BOAT,null,1);
+        MATERIAL.addLore(item1,MATERIAL_TYPE.WOOD,500);
+        MATERIAL.addLore(item1,MATERIAL_TYPE.IRON,100);
         inv.setItem(0,item1);
     }
     public  void OperateCraftingTable(InventoryClickEvent event){

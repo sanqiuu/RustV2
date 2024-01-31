@@ -47,8 +47,10 @@ public class RPlayer {
     }
     public void addBlock(Block block){
         blocksList.add(block.getLocation());
+
     }
     public void removeBlock(Block block){
         blocksList.remove(block.getLocation());
+
     }
 }

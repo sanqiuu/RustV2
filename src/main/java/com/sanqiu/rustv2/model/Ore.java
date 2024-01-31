@@ -8,9 +8,9 @@ import org.bukkit.block.Block;
 import org.bukkit.metadata.FixedMetadataValue;
 
 public class Ore  {
-    public static final int DropRate = 5;
-    private static final String OreName = "ORE";
+
     Chunk chunk;
+    RChunk rChunk;
     int block_x;
     int block_y;
     int block_z;
@@ -57,18 +57,22 @@ public class Ore  {
                     if(b == null) continue;
                     if(x==0&&z==0){
                         b.setType(Material.REDSTONE_ORE,false);
+                        rChunk.addOre(b.getLocation());
                         continue;
                     }
                     if(x==0){
                         b.setType(Material.COAL_ORE,false);
+                        rChunk.addOre(b.getLocation());
                         continue;
                     }
                     if(z==0){
                         b.setType(Material.IRON_ORE,false);
+                        rChunk.addOre(b.getLocation());
                         continue;
                     }
                     if(y==0){
                         b.setType(Material.COBBLESTONE,false);
+                        rChunk.addOre(b.getLocation());
                     }
                 }
             }
@@ -104,6 +108,7 @@ public class Ore  {
             ChunkManager.INSTANCE.add(rChunk);
         }
         rChunk.initOreList();
+        this.rChunk = rChunk;
         create(chunk);
 
         ChunkSnapshot chunkSnapshot = chunk.getChunkSnapshot();
@@ -114,11 +119,7 @@ public class Ore  {
 
                     Block block = chunk.getBlock(x,y,z);
                     Material material = block.getType();
-                    if(material == Material.LOG ||
-                            material== Material.REDSTONE_ORE||
-                            material== Material.COAL_ORE||
-                            material== Material.IRON_ORE||
-                            material== Material.COBBLESTONE){
+                    if(material == Material.LOG ||material == Material.LOG_2 ){
                         rChunk.addOre(block.getLocation());
                     }
                 }

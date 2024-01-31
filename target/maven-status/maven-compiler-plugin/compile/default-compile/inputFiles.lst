@@ -5,7 +5,9 @@ D:\Code\rustmc\RustV2\src\main\java\com\sanqiu\rustv2\listener\PlayerListener.ja
 D:\Code\rustmc\RustV2\src\main\java\com\sanqiu\rustv2\runnable\PlayerSaver.java
 D:\Code\rustmc\RustV2\src\main\java\com\sanqiu\rustv2\manager\ChunkManager.java
 D:\Code\rustmc\RustV2\src\main\java\com\sanqiu\rustv2\listener\CraftingTableListener.java
+D:\Code\rustmc\RustV2\src\main\java\com\sanqiu\rustv2\listener\DropListener.java
 D:\Code\rustmc\RustV2\src\main\java\com\sanqiu\rustv2\RustV2.java
+D:\Code\rustmc\RustV2\src\main\java\com\sanqiu\rustv2\recipe\RecipeWorkBench.java
 D:\Code\rustmc\RustV2\src\main\java\com\sanqiu\rustv2\runnable\RadioUpdater.java
 D:\Code\rustmc\RustV2\src\main\java\com\sanqiu\rustv2\model\Blueprint.java
 D:\Code\rustmc\RustV2\src\main\java\com\sanqiu\rustv2\util\Config.java
@@ -17,10 +19,12 @@ D:\Code\rustmc\RustV2\src\main\java\com\sanqiu\rustv2\util\ItemUtil.java
 D:\Code\rustmc\RustV2\src\main\java\com\sanqiu\rustv2\listener\SupplyBoxListener.java
 D:\Code\rustmc\RustV2\src\main\java\com\sanqiu\rustv2\model\TNT.java
 D:\Code\rustmc\RustV2\src\main\java\com\sanqiu\rustv2\runnable\SupplyBoxUpdater.java
+D:\Code\rustmc\RustV2\src\main\java\com\sanqiu\rustv2\command\Cmd.java
 D:\Code\rustmc\RustV2\src\main\java\com\sanqiu\rustv2\model\Radio.java
 D:\Code\rustmc\RustV2\src\main\java\com\sanqiu\rustv2\listener\LifeBlockListener.java
 D:\Code\rustmc\RustV2\src\main\java\com\sanqiu\rustv2\model\SupplyBox.java
 D:\Code\rustmc\RustV2\src\main\java\com\sanqiu\rustv2\listener\BlueprintListener.java
+D:\Code\rustmc\RustV2\src\main\java\com\sanqiu\rustv2\model\Drop.java
 D:\Code\rustmc\RustV2\src\main\java\com\sanqiu\rustv2\listener\RadioListener.java
 D:\Code\rustmc\RustV2\src\main\java\com\sanqiu\rustv2\model\Ore.java
 D:\Code\rustmc\RustV2\src\main\java\com\sanqiu\rustv2\model\LifeBlock.java
