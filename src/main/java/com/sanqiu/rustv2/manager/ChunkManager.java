@@ -47,6 +47,7 @@ public class ChunkManager {
         chunk_list.add(rChunk);
     }
     public   void load(){
+
         ymal.getConfigurationSection("chunk_list").getKeys(false).forEach(key->{
             int x = ymal.getInt("chunk_list."+key+".x");
             int z = ymal.getInt("chunk_list."+key+".z");

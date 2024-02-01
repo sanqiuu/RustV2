@@ -1,10 +1,15 @@
 package com.sanqiu.rustv2.util;
 
 import org.bukkit.Material;
+import org.bukkit.configuration.InvalidConfigurationException;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 
 public class ItemUtil {
     private static boolean isLog(ItemStack itemStack){
@@ -75,6 +80,20 @@ public class ItemUtil {
         }
 
     }
-
+    public static ItemStack stringToItem(String string){
+        try {
+            YamlConfiguration config = new YamlConfiguration();
+            config.loadFromString(string);
+            return config.getItemStack("Item");
+        }
+        catch(InvalidConfigurationException e){
+            throw new IllegalArgumentException("String is not an item: " + string);
+        }
+    }
+    public static String itemToString(ItemStack item){
+        YamlConfiguration config = new YamlConfiguration();
+        config.set("Item", item);
+        return config.saveToString();
+    }
 
 }

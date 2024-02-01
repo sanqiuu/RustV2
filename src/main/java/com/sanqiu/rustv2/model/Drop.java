@@ -14,5 +14,11 @@ public class Drop {
         itemStack.setItemMeta(meta);
         return itemStack;
     }
-
+    public  static  ItemStack createBlueprint(String type,int amount){
+        ItemStack itemStack = new ItemStack(Material.PAPER,amount);
+        ItemMeta meta = itemStack.getItemMeta();
+        meta.setDisplayName("蓝图-"+type);
+        itemStack.setItemMeta(meta);
+        return itemStack;
+    }
 }

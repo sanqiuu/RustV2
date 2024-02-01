@@ -83,7 +83,6 @@ public class LifeBlock {
         Block block = event.getClickedBlock();
         if(!(block.getState().getData() instanceof Door))  return;
         Player who = getWhoPlace(block);
-
         if(who!=null){
             Player player = event.getPlayer();
             if(!player.getUniqueId().equals(who.getUniqueId())){;

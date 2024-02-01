@@ -1,9 +1,9 @@
 package com.sanqiu.rustv2.util;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class JavaUtil {
+
     public static <T> List<T> castList(Object obj, Class<T> clazz)
     {
         List<T> result = new ArrayList<T>();
