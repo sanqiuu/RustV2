@@ -100,7 +100,7 @@ public class Ore  {
         }
     }
     public    void  add(Chunk chunk){
-
+        if(!chunk.isLoaded()) return;
         RChunk rChunk =  ChunkManager.INSTANCE.get(chunk);
         if(rChunk!=null && rChunk.isOreListInit()) return;
         if(rChunk == null) {

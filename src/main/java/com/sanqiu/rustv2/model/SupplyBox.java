@@ -73,6 +73,7 @@ public class SupplyBox {
         }
     }
     public  static void add(Chunk chunk){
+        if(!chunk.isLoaded()) return;
        RChunk rChunk =  ChunkManager.INSTANCE.get(chunk);
         if(rChunk!=null && rChunk.isSupplyListInit()) return;
         if(rChunk == null) {
