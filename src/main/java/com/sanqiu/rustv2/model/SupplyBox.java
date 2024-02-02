@@ -26,24 +26,24 @@ public class SupplyBox {
         }
     }
     private static SUPPLY_ELEMENT[] SupplyList = {
-            new SUPPLY_ELEMENT(new ItemStack(Material.IRON_INGOT,10),10),
-            new SUPPLY_ELEMENT(new ItemStack(Material.REDSTONE,10),10),
-            new SUPPLY_ELEMENT(new ItemStack(Material.FEATHER,10),10),
-            new SUPPLY_ELEMENT(new ItemStack(Material.LEATHER,10),10),
-            new SUPPLY_ELEMENT(new ItemStack(Material.STRING,10),10),
-            new SUPPLY_ELEMENT(Drop.createCloth(10),10),
-            new SUPPLY_ELEMENT(Drop.createBlueprint("铁靴子",1),5),
-            new SUPPLY_ELEMENT(Drop.createBlueprint("铁胸甲",1),5),
-            new SUPPLY_ELEMENT(Drop.createBlueprint("铁头盔",1),5),
-            new SUPPLY_ELEMENT(Drop.createBlueprint("铁护腿",1),5),
-            new SUPPLY_ELEMENT(Drop.createBlueprint("TNT",1),5),
+            new SUPPLY_ELEMENT(new ItemStack(Material.IRON_INGOT,10),100),
+            new SUPPLY_ELEMENT(new ItemStack(Material.REDSTONE,10),100),
+            new SUPPLY_ELEMENT(new ItemStack(Material.FEATHER,10),100),
+            new SUPPLY_ELEMENT(new ItemStack(Material.LEATHER,10),100),
+            new SUPPLY_ELEMENT(new ItemStack(Material.STRING,10),100),
+            new SUPPLY_ELEMENT(Drop.createCloth(10),100),
+            new SUPPLY_ELEMENT(Drop.createBlueprint("铁靴子",1),50),
+            new SUPPLY_ELEMENT(Drop.createBlueprint("铁胸甲",1),50),
+            new SUPPLY_ELEMENT(Drop.createBlueprint("铁头盔",1),50),
+            new SUPPLY_ELEMENT(Drop.createBlueprint("铁护腿",1),50),
+            new SUPPLY_ELEMENT(Drop.createBlueprint("TNT",1),50),
             new SUPPLY_ELEMENT(Drop.createBlueprint("AK-47",1),1),
             new SUPPLY_ELEMENT(Drop.createBlueprint("Karabiner 98k",1),1),
-            new SUPPLY_ELEMENT(Drop.createBlueprint("MP5",1),3),
+            new SUPPLY_ELEMENT(Drop.createBlueprint("MP5",1),5),
             new SUPPLY_ELEMENT(Drop.createBlueprint("火箭炮",1),1),
             new SUPPLY_ELEMENT(Drop.createBlueprint("飞机",1),1),
-            new SUPPLY_ELEMENT(Drop.createBlueprint("自行车",1),5),
-            new SUPPLY_ELEMENT(Drop.createBlueprint("汽车",1),3)
+            new SUPPLY_ELEMENT(Drop.createBlueprint("自行车",1),50),
+            new SUPPLY_ELEMENT(Drop.createBlueprint("汽车",1),1)
 
     };
     private static final String SupplyBoxName = "container.chest";
@@ -73,7 +73,7 @@ public class SupplyBox {
         }
     }
     public  static void add(Chunk chunk){
-        if(!chunk.isLoaded()) return;
+
        RChunk rChunk =  ChunkManager.INSTANCE.get(chunk);
         if(rChunk!=null && rChunk.isSupplyListInit()) return;
         if(rChunk == null) {

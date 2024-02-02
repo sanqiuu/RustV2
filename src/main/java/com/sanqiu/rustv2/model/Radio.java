@@ -5,6 +5,7 @@ import com.sanqiu.rustv2.data.RChunk;
 import com.sanqiu.rustv2.manager.ChunkManager;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -102,15 +103,40 @@ public class Radio {
         }
         return isRadiate;
     }
+    private static int getPlayerRadioArmor(Player player){
+        int RadioArmor = 0;
+        for(ItemStack item :player.getEquipment().getArmorContents()){
+            if(item == null) continue;
+            switch (item.getType()){
+                case LEATHER_BOOTS:
+                case LEATHER_CHESTPLATE:
+                case LEATHER_HELMET:
+                case LEATHER_LEGGINGS:
+                    RadioArmor +=1;
+                    break;
+                case IRON_BOOTS:
+                case IRON_CHESTPLATE:
+                case IRON_HELMET:
+                case IRON_LEGGINGS:
+                    RadioArmor +=2;
+                    break;
+            }
+        }
+
+        return RadioArmor;
+    }
     public static void Radiate(Player player){
 
         int value = getRadioValue(player);
         if(isRadioZone(player.getLocation())){
-            value+=9;
+            int add = 9;
+            add-=getPlayerRadioArmor(player);
+            value+=add;
 
         }else{
-            if(value>0){
-                value--;
+            value-=2;
+            if(value<0){
+                value = 0;
             }
 
         }

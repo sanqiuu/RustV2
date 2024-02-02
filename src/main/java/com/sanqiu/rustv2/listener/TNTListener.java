@@ -1,6 +1,7 @@
 package com.sanqiu.rustv2.listener;
 
 import com.sanqiu.rustv2.model.TNT;
+import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
@@ -11,12 +12,6 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 
 public class TNTListener implements Listener {
-    @EventHandler
-    public void onExplode(EntityExplodeEvent event)
-    {
-        //BlockExplodeEvent只在爆炸的来源未知时触发。而EntityExplodeEvent是人为触发的
-        event.setCancelled(true);
-    }
     @EventHandler
     public void onTNTPlace(BlockPlaceEvent event)
     {

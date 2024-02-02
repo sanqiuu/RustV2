@@ -8,11 +8,13 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockExplodeEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.material.Door;
 import org.bukkit.metadata.FixedMetadataValue;
@@ -70,11 +72,15 @@ public class LifeBlock {
         Block block = event.getBlock();
         Player player = event.getPlayer();
         //player.sendMessage("放置类型："+block.getType().toString()+"["+block.getData()+"]");
-        if(!Radio.isRadioZone(block.getLocation())){
-            addBlock(block,player);
-        }else {
+        if(Radio.isRadioZone(block.getLocation())){
             player.sendMessage("该区域禁止放置方块");
             event.setCancelled(true);
+
+        }else if(Ore.isOre(block)){
+            event.setCancelled(true);
+        }
+        else {
+            addBlock(block,player);
         }
 
     }
@@ -85,7 +91,7 @@ public class LifeBlock {
         Player who = getWhoPlace(block);
         if(who!=null){
             Player player = event.getPlayer();
-            if(!player.getUniqueId().equals(who.getUniqueId())){;
+            if(isLifeBlock(block.getType())  && !player.getUniqueId().equals(who.getUniqueId())){;
                 event.setCancelled(true);
                 player.sendMessage("操作失败，该装置由["+ player.getName()+"]放置");
             }
@@ -144,6 +150,18 @@ private static boolean harmLifeBlock(Block block){
 }
     public static void interact(BlockExplodeEvent event){
         event.setCancelled(true);
+        for(Block block: event.blockList()){
+            Player player = getWhoPlace(block);
+            boolean isDestory = harmLifeBlock(block);
+            if(player != null && isDestory){
+                block.setType(Material.AIR);
+                removeBlock(block);
+            }
+        }
+    }
+    public static void interact(EntityExplodeEvent event){
+        event.setCancelled(true);
+        if(event.getEntityType()!= EntityType.PLAYER) return;
         for(Block block: event.blockList()){
             Player player = getWhoPlace(block);
             boolean isDestory = harmLifeBlock(block);

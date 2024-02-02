@@ -8,9 +8,7 @@ import org.bukkit.block.Block;
 import org.bukkit.metadata.FixedMetadataValue;
 
 public class Ore  {
-
     Chunk chunk;
-    RChunk rChunk;
     int block_x;
     int block_y;
     int block_z;
@@ -57,22 +55,18 @@ public class Ore  {
                     if(b == null) continue;
                     if(x==0&&z==0){
                         b.setType(Material.REDSTONE_ORE,false);
-                        rChunk.addOre(b.getLocation());
                         continue;
                     }
                     if(x==0){
                         b.setType(Material.COAL_ORE,false);
-                        rChunk.addOre(b.getLocation());
                         continue;
                     }
                     if(z==0){
                         b.setType(Material.IRON_ORE,false);
-                        rChunk.addOre(b.getLocation());
                         continue;
                     }
                     if(y==0){
                         b.setType(Material.COBBLESTONE,false);
-                        rChunk.addOre(b.getLocation());
                     }
                 }
             }
@@ -81,9 +75,11 @@ public class Ore  {
     }
 
 
-    private void create(Chunk chunk) {
+    public void create(Chunk chunk) {
         this.chunk = chunk;
-
+        Block mark = chunk.getBlock(8,8,8);
+        if(mark.getType() == Material.IRON_BLOCK) return;
+        mark.setType(Material.IRON_BLOCK,false);
         ChunkSnapshot chunkSnapshot = chunk.getChunkSnapshot();
         int max_num = 1;
         int num = 0;
@@ -99,41 +95,23 @@ public class Ore  {
             }
         }
     }
-    public    void  add(Chunk chunk){
-        if(!chunk.isLoaded()) return;
-        RChunk rChunk =  ChunkManager.INSTANCE.get(chunk);
-        if(rChunk!=null && rChunk.isOreListInit()) return;
-        if(rChunk == null) {
-            rChunk = new RChunk(chunk.getX(),chunk.getZ());
-            ChunkManager.INSTANCE.add(rChunk);
-        }
-        rChunk.initOreList();
-        this.rChunk = rChunk;
-        create(chunk);
-
-        ChunkSnapshot chunkSnapshot = chunk.getChunkSnapshot();
-        for (int x = 0; x < 16; x++) {
-            for (int z = 0; z < 16; z++) {
-                int y_max = chunkSnapshot.getHighestBlockYAt(x,z);
-                for (int y = 0; y < y_max; y++) {
-
-                    Block block = chunk.getBlock(x,y,z);
-                    Material material = block.getType();
-                    if(material == Material.LOG ||material == Material.LOG_2 ){
-                        rChunk.addOre(block.getLocation());
-                    }
-                }
-            }
-        }
-    }
     public static boolean isOre(Block block) {
-        RChunk rChunk = ChunkManager.INSTANCE.get(block.getChunk());
-        if(rChunk != null && rChunk.isOre(block.getLocation())){
-            return true;
-        }
-     return false;
+       boolean result = false;
+       switch (block.getType()){
+           case REDSTONE_ORE:
+           case GLOWING_REDSTONE_ORE:
+           case COAL_ORE:
+           case IRON_ORE:
+           case COBBLESTONE:
+           case LOG_2:
+           case LOG:
+               result = true;
+               break;
+
+       }
+       return  result;
     }
-    public static void remove(Block block) {
+    public static void recover(Block block) {
         Bukkit.getScheduler().scheduleSyncDelayedTask(RustV2.getPlugin(), new Runnable() {
             Material material = block.getType();
             byte data = block.getData();

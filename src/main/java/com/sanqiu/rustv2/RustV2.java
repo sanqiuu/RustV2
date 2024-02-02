@@ -5,10 +5,7 @@ import com.sanqiu.rustv2.listener.*;
 import com.sanqiu.rustv2.manager.ChunkManager;
 import com.sanqiu.rustv2.manager.PlayerManager;
 import com.sanqiu.rustv2.recipe.RecipeWorkBench;
-import com.sanqiu.rustv2.runnable.ChunkSaver;
-import com.sanqiu.rustv2.runnable.PlayerSaver;
-import com.sanqiu.rustv2.runnable.RadioUpdater;
-import com.sanqiu.rustv2.runnable.SupplyBoxUpdater;
+import com.sanqiu.rustv2.runnable.*;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class RustV2 extends JavaPlugin {
@@ -28,10 +25,11 @@ public final class RustV2 extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new OreListener(), this);
         getServer().getPluginManager().registerEvents(new RadioListener(), this);
         getServer().getPluginManager().registerEvents(new DropListener(), this);
-        new PlayerSaver().runTaskTimer(this, 10*20,30*20);
-        new ChunkSaver().runTaskTimer(this, 60*20,10*60*20);
-        new RadioUpdater().runTaskTimer(this, 0,20);
-        new SupplyBoxUpdater().runTaskTimer(this, 10*20,30*60*20);
+        new PlayerSaver().runTaskTimer(this, 10*20,10*20);
+        new ChunkSaver().runTaskTimer(this, 60*20,5*60*20);
+        new RadioUpdater().runTaskTimer(this, 0,2*20);
+        new ChunkLoader().runTaskTimer(this, 0,10*20);
+        new SupplyBoxUpdater().runTaskTimer(this, 10*20,10*60*20);
         getLogger().info("已成功加载rustmc插件.");
     }
 

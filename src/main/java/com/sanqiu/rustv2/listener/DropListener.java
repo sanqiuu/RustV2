@@ -20,10 +20,14 @@ public class DropListener implements Listener {
         Block block = event.getBlock();
 
         if(Ore.isOre(block)){
+            World world = block.getWorld();
+            event.setDropItems(false);
             for(ItemStack itemStack:block.getDrops()){
                 int amount = itemStack.getAmount();
                 itemStack.setAmount(amount * Drop.OreRate);
+                world.dropItemNaturally(event.getBlock().getLocation(), itemStack);
             }
+            Ore.recover(block);
         }
     }
     @EventHandler

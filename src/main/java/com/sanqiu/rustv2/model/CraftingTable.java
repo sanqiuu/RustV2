@@ -243,28 +243,35 @@ public class CraftingTable {
         inv.setItem(2,item);
     }
     private void InitTestInventory(Inventory inv,Player player){
-        ItemStack item1 = Drop.createBlueprint("TNT",1);
-        ItemStack item2 = toItem(Material.IRON_ORE,null,64,false);
-        ItemStack item3 = toItem(Material.GOLD_ORE,null,64,false);
-        ItemStack item4 = toItem(Material.DIAMOND_ORE,null,64,false);
-        ItemStack item5 = toItem(Material.COAL_ORE,null,64,false);
-        ItemStack item6 = toItem(Material.REDSTONE_ORE,null,64,false);
-        ItemStack item7 = toItem(Material.LOG,null,64,false);
-        ItemStack item8 = toItem(Material.STONE,null,64,false);
-        ItemStack item9 = toItem(Material.COBBLESTONE,null,64,false);
-        ItemStack item10 = toItem(Material.BREAD,null,64,false);
-        ItemStack item11 = toItem(Material.GOLDEN_APPLE,null,64,false);
-        inv.setItem(0,item1);
-        inv.setItem(1,item2);
-        inv.setItem(2,item3);
-        inv.setItem(3,item4);
-        inv.setItem(4,item5);
-        inv.setItem(5,item6);
-        inv.setItem(6,item7);
-        inv.setItem(7,item8);
-        inv.setItem(8,item9);
-        inv.setItem(9,item10);
-        inv.setItem(10,item11);
+        ItemStack item = Drop.createBlueprint("TNT",1);
+        inv.setItem(0,item);
+        item = Drop.createBlueprint("AK-47",1);
+        inv.setItem(1,item);
+        item = Drop.createBlueprint("飞机",1);
+        inv.setItem(2,item);
+        item = Drop.createBlueprint("汽车",1);
+        inv.setItem(3,item);
+        item = toItem(Material.IRON_INGOT,null,64,false);
+        inv.setItem(4,item);
+        item = toItem(Material.COAL,null,64,false);
+        inv.setItem(5,item);
+        item = toItem(Material.REDSTONE,null,64,false);
+        inv.setItem(6,item);
+        item = toItem(Material.LOG,null,64,false);
+        inv.setItem(7,item);
+        item = toItem(Material.COBBLESTONE,null,64,false);
+        inv.setItem(8,item);
+        item = toItem(Material.BREAD,null,64,false);
+        inv.setItem(9,item);
+        item = toItem(Material.GOLDEN_APPLE,null,64,false);
+        inv.setItem(10,item);
+        item = toItem(Material.LEATHER,null,64,false);
+        inv.setItem(11,item);
+        item = toItem(Material.FEATHER,null,64,false);
+        inv.setItem(12,item);
+        item = Drop.createCloth(64);
+        inv.setItem(13,item);
+
     }
     private void InitRustBlockInventory(Inventory inv,Player player){
         ItemStack item ;
