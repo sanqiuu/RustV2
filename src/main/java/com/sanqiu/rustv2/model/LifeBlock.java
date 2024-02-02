@@ -17,6 +17,7 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.material.Door;
+import org.bukkit.material.MaterialData;
 import org.bukkit.material.TrapDoor;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.plugin.Plugin;
@@ -88,14 +89,15 @@ public class LifeBlock {
     public static void interact(PlayerInteractEvent event){
         if(event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
         Block block = event.getClickedBlock();
-        if(!(block.getState().getData() instanceof Door))  return;
-        if(!(block.getState().getData() instanceof TrapDoor))  return;
-        Player who = getWhoPlace(block);
-        if(who!=null){
-            Player player = event.getPlayer();
-            if(isLifeBlock(block.getType())  && !player.getUniqueId().equals(who.getUniqueId())){;
-                event.setCancelled(true);
-                player.sendMessage("操作失败，该装置由["+ who.getName()+"]放置");
+        MaterialData data = block.getState().getData();
+        if(data instanceof Door || data instanceof TrapDoor){
+            Player who = getWhoPlace(block);
+            if(who!=null){
+                Player player = event.getPlayer();
+                if(isLifeBlock(block.getType())  && !player.getUniqueId().equals(who.getUniqueId())){;
+                    event.setCancelled(true);
+                    player.sendMessage("操作失败，该装置由["+ who.getName()+"]放置");
+                }
             }
         }
     }
