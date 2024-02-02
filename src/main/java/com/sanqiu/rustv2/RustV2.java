@@ -15,6 +15,8 @@ public final class RustV2 extends JavaPlugin {
         // Plugin startup logic
         setPlugin(this);
         RecipeWorkBench.Create();
+        PlayerManager.INSTANCE.load();
+        ChunkManager.INSTANCE.load();
         getServer().getPluginCommand("rustmc").setExecutor(new Cmd());
         getServer().getPluginManager().registerEvents(new TNTListener(), this);
         getServer().getPluginManager().registerEvents(new LifeBlockListener(), this);
@@ -25,11 +27,11 @@ public final class RustV2 extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new OreListener(), this);
         getServer().getPluginManager().registerEvents(new RadioListener(), this);
         getServer().getPluginManager().registerEvents(new DropListener(), this);
-        new PlayerSaver().runTaskTimer(this, 10*20,10*20);
+        new PlayerSaver().runTaskTimer(this, 60*20,10*20);
         new ChunkSaver().runTaskTimer(this, 60*20,5*60*20);
         new RadioUpdater().runTaskTimer(this, 0,2*20);
         new ChunkLoader().runTaskTimer(this, 0,10*20);
-        new SupplyBoxUpdater().runTaskTimer(this, 10*20,10*60*20);
+        new SupplyBoxUpdater().runTaskTimer(this, 60*20,10*60*20);
         getLogger().info("已成功加载rustmc插件.");
     }
 

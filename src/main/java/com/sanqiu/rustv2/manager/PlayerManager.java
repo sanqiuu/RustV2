@@ -3,6 +3,7 @@ package com.sanqiu.rustv2.manager;
 import com.sanqiu.rustv2.data.RPlayer;
 import com.sanqiu.rustv2.util.Config;
 import com.sanqiu.rustv2.util.JavaUtil;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -18,7 +19,10 @@ public class PlayerManager {
     private PlayerManager(){
         config  = new Config("player.yml");
         ymal = config.load();
-        ymal.createSection("player_list");
+        if(!ymal.contains("player_list")){
+            ymal.createSection("player_list");
+        }
+
     }
     public final List<RPlayer> player_list = new ArrayList<>();
     public boolean contains(Player player){
@@ -58,11 +62,9 @@ public class PlayerManager {
         int index = 0;
         for(RPlayer player:player_list){
             String uuid = player.uuid;
-            String name = player.name;
             List<String> blueprintList = player.blueprintList;
             List<Location> blocksList  =  player.blocksList;
             ymal.set("player_list."+index+".uuid",uuid);
-            ymal.set("player_list."+index+".name",name);
             ymal.set("player_list."+index+".blueprintList",blueprintList);
             ymal.set("player_list."+index+".blocksList",blocksList);
             index++;

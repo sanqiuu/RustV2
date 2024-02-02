@@ -13,20 +13,17 @@ import java.util.UUID;
 
 public class RPlayer {
     public String uuid;
-    public String name;
     public List<String> blueprintList;
     public List<Location> blocksList;
 
     public RPlayer(String uuid, List<String> blueprintList , List<Location> blocksList){
             this.uuid = uuid;
-            name = Bukkit.getPlayer(UUID.fromString(uuid)).getName();
             this.blueprintList = blueprintList;
             this.blocksList = blocksList;
 
     }
     public RPlayer(String uuid){
         this.uuid = uuid;
-        name = Bukkit.getPlayer(UUID.fromString(uuid)).getName();
         this.blueprintList =  new ArrayList<>();
         this.blocksList =  new ArrayList<>();
     }

@@ -19,7 +19,9 @@ public class ChunkManager {
     private ChunkManager(){
         config  = new Config("chunk.yml");
         ymal = config.load();
-        ymal.createSection("chunk_list");
+        if(!ymal.contains("chunk_list")){
+            ymal.createSection("chunk_list");
+        }
     }
     public final List<RChunk> chunk_list = new ArrayList<>();
     public boolean contains(Chunk chunk){
