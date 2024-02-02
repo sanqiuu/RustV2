@@ -21,7 +21,7 @@ public class RadioUpdater extends BukkitRunnable {
             }else {
                 Radio.Radiate(player);
             }
-            //Bukkit.getLogger().info("item类型-"+ ItemUtil.itemToString(player.getItemInHand()));
+
         }
     }
 }

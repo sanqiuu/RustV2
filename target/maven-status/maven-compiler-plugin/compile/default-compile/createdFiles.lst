@@ -22,6 +22,7 @@ com\sanqiu\rustv2\model\TNT.class
 com\sanqiu\rustv2\runnable\RadioUpdater.class
 com\sanqiu\rustv2\util\JavaUtil.class
 com\sanqiu\rustv2\command\Cmd.class
+com\sanqiu\rustv2\listener\DropListener$1.class
 com\sanqiu\rustv2\listener\OreListener.class
 com\sanqiu\rustv2\listener\RadioListener.class
 com\sanqiu\rustv2\model\MATERIAL.class

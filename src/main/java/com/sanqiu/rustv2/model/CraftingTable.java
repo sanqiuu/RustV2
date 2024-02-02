@@ -485,6 +485,9 @@ public class CraftingTable {
         MATERIAL.addLore(item,MATERIAL_TYPE.LEATHER,15);
         MATERIAL.addLore(item,MATERIAL_TYPE.IRON,2);
         inv.setItem(1,item);
+        item = toItem(Material.BREAD,null,1,false);
+        MATERIAL.addLore(item,MATERIAL_TYPE.CLOTH,15);
+        inv.setItem(2,item);
     }
     private void InitVehicleInventory(Inventory inv,Player player){
         ItemStack item = toItem(Material.BOAT,null,1,false);
@@ -506,6 +509,11 @@ public class CraftingTable {
         MATERIAL.addLore(item,MATERIAL_TYPE.CLOTH,64);
         MATERIAL.addLore(item,MATERIAL_TYPE.LEATHER,64);
         inv.setItem(3,item);
+        item = toItem(VehicleInterface.create(VehicleInterface.VEHICLE_TYPE.SpeedBoat),true);
+        MATERIAL.addLore(item,MATERIAL_TYPE.IRON,500);
+        MATERIAL.addLore(item,MATERIAL_TYPE.CLOTH,64);
+        MATERIAL.addLore(item,MATERIAL_TYPE.LEATHER,64);
+        inv.setItem(4,item);
     }
     public  void OperateCraftingTable(InventoryClickEvent event){
         Inventory inv = event.getInventory();

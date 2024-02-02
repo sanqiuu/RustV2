@@ -2,6 +2,7 @@ package com.sanqiu.rustv2.listener;
 
 import com.sanqiu.rustv2.model.Drop;
 import com.sanqiu.rustv2.model.Ore;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.EntityType;
@@ -35,6 +36,14 @@ public class DropListener implements Listener {
         if(event.getEntityType() == EntityType.PLAYER) return;
         List<ItemStack> list = event.getDrops();
         for(ItemStack item : list){
+            Material material = item.getType();
+            switch (material){
+                case ROTTEN_FLESH:
+                case SPIDER_EYE:
+                case BONE:
+                    item.setType(Material.LEATHER);
+                    break;
+            }
             int amount = item.getAmount();
             item.setAmount(amount * Drop.AnimalDropRate);
         }

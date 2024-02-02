@@ -25,6 +25,7 @@ D:\Code\rustmc\RustV2\src\main\java\com\sanqiu\rustv2\command\Cmd.java
 D:\Code\rustmc\RustV2\src\main\java\com\sanqiu\rustv2\model\Radio.java
 D:\Code\rustmc\RustV2\src\main\java\com\sanqiu\rustv2\listener\LifeBlockListener.java
 D:\Code\rustmc\RustV2\src\main\java\com\sanqiu\rustv2\model\SupplyBox.java
+D:\Code\rustmc\RustV2\src\main\java\com\sanqiu\rustv2\runnable\ChunkLoader.java
 D:\Code\rustmc\RustV2\src\main\java\com\sanqiu\rustv2\listener\BlueprintListener.java
 D:\Code\rustmc\RustV2\src\main\java\com\sanqiu\rustv2\model\Drop.java
 D:\Code\rustmc\RustV2\src\main\java\com\sanqiu\rustv2\listener\RadioListener.java

@@ -20,7 +20,7 @@ public class VehicleInterface {
                 "  meta:\n" +
                 "    ==: ItemMeta\n" +
                 "    meta-type: UNSPECIFIC\n" +
-                "    internal: H4sIAAAAAAAAAONiYOBi4HPKyU/Ods0rySypDElMZ2bgSs1Lz8xLDclMLWIAAmYGzvKM1NSckMqCVBCfg4G9LDUjMzknlUEIyrBKKs0tSC2KT04E6gAA7RLAklUAAAA="),
+                "    internal: H4sIAAAAAAAAAONiYOBi4HPKyU/Ods0rySypDElMZ2bgSs1Lz8xLDclMLWIAAmYGzvKM1NSckMqCVBCfg4G9LDUjMzknlUEQyrAqzk0sKolPTgRqAACdf2X6VAAAAA=="),
         Bike("自行车","Item:\n" +
                 "  ==: org.bukkit.inventory.ItemStack\n" +
                 "  type: VEHICLE_VEHICLE_CRATE\n" +
@@ -41,7 +41,15 @@ public class VehicleInterface {
                 "  meta:\n" +
                 "    ==: ItemMeta\n" +
                 "    meta-type: UNSPECIFIC\n" +
-                "    internal: H4sIAAAAAAAAAONiYGBlYEkrTc1xnePAwAAAx2b6Ww8AAAA=");
+                "    internal: H4sIAAAAAAAAAONiYGBlYEkrTc1xnePAwAAAx2b6Ww8AAAA="),
+
+        SpeedBoat("游艇","Item:\n" +
+                "  ==: org.bukkit.inventory.ItemStack\n" +
+                "  type: VEHICLE_VEHICLE_CRATE\n" +
+                "  meta:\n" +
+                "    ==: ItemMeta\n" +
+                "    meta-type: UNSPECIFIC\n" +
+                "    internal: H4sIAAAAAAAAAONiYOBi4HPKyU/Ods0rySypDElMZ2bgSs1Lz8xLDclMLWIAAmYGzvKM1NSckMqCVBCfg4G9LDUjMzknlUEIyrAqLkhNTYlPyk8sYWAAAPSF85pVAAAA");
         private final String name;
         private final String itemstackString;
         VEHICLE_TYPE(String name,String itemstackString) {
@@ -52,7 +60,6 @@ public class VehicleInterface {
     public static ItemStack create(VEHICLE_TYPE type){
         ItemStack item = ItemUtil.stringToItem(type.itemstackString);
         ItemMeta itemMeta = item.getItemMeta();
-
         itemMeta.setDisplayName(type.name);
         item.setItemMeta(itemMeta);
         return item;
