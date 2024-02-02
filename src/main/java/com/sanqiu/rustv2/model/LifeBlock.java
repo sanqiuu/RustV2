@@ -102,7 +102,7 @@ private static boolean isLifeBlock(Material material){
         switch (material){
             case WOOD:
             case SMOOTH_BRICK:
-            case WOOD_DOOR:
+            case WOODEN_DOOR:
             case IRON_DOOR:
             case CHEST:
             case STAINED_GLASS:
